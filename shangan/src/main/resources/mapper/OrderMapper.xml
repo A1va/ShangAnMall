@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shangan.mall.dao.OrderMapper">
+<resultMap id="BaseResultMap" type="com.shangan.mall.entity.Order">
+    <id column="order_id" jdbcType="BIGINT" property="orderId"/>
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
+    <result column="user_id" jdbcType="BIGINT" property="userId"/>
+    <result column="total_price" jdbcType="INTEGER" property="totalPrice"/>
+    <result column="pay_status" jdbcType="TINYINT" property="payStatus"/>
+    <result column="pay_type" jdbcType="TINYINT" property="payType"/>
+    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime"/>
+    <result column="order_status" jdbcType="TINYINT" property="orderStatus"/>
+    <result column="extra_info" jdbcType="VARCHAR" property="extraInfo"/>
+    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+</resultMap>
+    <sql id="Base_Column_List">
+        order_id,order_no,user_id,total_price,pay_status,pay_type,pay_time,order_status,extra_info,is_deleted,create_time,update_time
+    </sql>
+    <sql id="Control_Column_List">
+       order_no,total_price,pay_status,order_status,create_time
+    </sql>
+    <select id="selectAllOrders" parameterType="Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from mall_order
+        <where>
+            <if test="query!=null and query!=''">
+                and (order_no like CONCAT('%',#{query},'%')
+            </if>
+        </where>
+        <if test="start!=null and limit!=null">
+            limit #{start},#{limit}
+        </if>
+    </select>
+    <select id="getOrdersTotalNum" parameterType="Map" resultType="int">
+        select COUNT(*) from mall_order
+        <where>
+            <if test="query!=null and query!=''">
+                and (order_no like CONCAT('%',#{query},'%')
+            </if>
+        </where>
+
+    </select>
+    <update id="updateOrderStatus" parameterType="com.shangan.mall.entity.Order">
+        update mall_order
+        set
+        order_status =#{orderStatus}
+        where order_no =#{orderNo,jdbcType=VARCHAR}
+    </update>
+    <select id="dayofprice" parameterType="java.lang.String" resultType="int">
+        select sum(total_price) from mall_order WHERE ( datediff ( create_time , #{date} ) = 0 )
+    </select>
+</mapper>

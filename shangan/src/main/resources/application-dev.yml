@@ -1,0 +1,33 @@
+# 启动服务的端口号
+server:
+  port: 8888
+
+
+# mybatis plus 配置
+mybatis-plus:
+  #  配置日志
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+  # docker 数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/mall?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=utf8&autoReconnect=true&useSSL=false&allowMultiQueries=true
+    username: root
+    password: jxbaba
+    #    hikari 数据池配置
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      idle-timeout: 60000
+      pool-name: hikariCP
+      max-lifetime: 600000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1

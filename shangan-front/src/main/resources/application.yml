@@ -1,0 +1,29 @@
+server:
+  port: 15335
+
+spring:
+  # docker database
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # debug: localhost
+    url: jdbc:mysql://127.0.0.1:3306/mall?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=utf8&autoReconnect=true&useSSL=false&allowMultiQueries=true&sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
+    # url: jdbc:mysql://192.168.56.10:3306/mall?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=utf8&autoReconnect=true&useSSL=false&allowMultiQueries=true&sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
+    username: root
+    # password: root
+    password: gengsen
+    # hikari data pool
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      idle-timeout: 60000
+      pool-name: hikariCP
+      max-lifetime: 600000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  #  cancel thymeleaf cache
+  thymeleaf:
+    cache: false
+# mybatis config
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml

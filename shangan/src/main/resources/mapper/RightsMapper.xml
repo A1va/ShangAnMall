@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shangan.mall.dao.RightsMapper">
+
+    <resultMap id="BaseResultMap" type="com.shangan.mall.entity.Rights">
+        <id column="administrator_id" jdbcType="BIGINT" property="adminUserId"/>
+        <result column="user_management" jdbcType="TINYINT" property="userManagement"/>
+        <result column="order_management" jdbcType="TINYINT" property="orderManagement"/>
+        <result column="goods_management" jdbcType="TINYINT" property="goodsManagement"/>
+        <result column="log_management" jdbcType="TINYINT" property="logManagement"/>
+        <result column="is_super" jdbcType="TINYINT" property="isSuper"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        administrator_id, user_management, order_management, goods_management, log_management, is_super
+    </sql>
+
+    <select id="selectRightsById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from rights
+        where administrator_id = #{adminUserId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAllNormalRights" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from rights
+        where is_super = false
+    </select>
+
+    <select id="selectRightsTotalNum" parameterType="boolean" resultType="int" >
+        select COUNT(*) from rights
+        <where>
+            <if test="includeSuper != true">
+                is_super = false
+            </if>
+        </where>
+    </select>
+
+    <update id="updateRightsSelective" parameterType="com.shangan.mall.entity.Rights">
+        update rights
+        <set>
+            <if test="userManagement != null">
+                user_management = #{userManagement, jdbcType=TINYINT},
+            </if>
+            <if test="orderManagement != null">
+                order_management = #{orderManagement, jdbcType=TINYINT},
+            </if>
+            <if test="goodsManagement != null">
+                goods_management = #{goodsManagement,jdbcType=TINYINT},
+            </if>
+            <if test="logManagement != null">
+                log_management = #{logManagement, jdbcType=TINYINT},
+            </if>
+        </set>
+        where administrator_id = #{adminUserId,jdbcType=BIGINT}
+    </update>
+</mapper>

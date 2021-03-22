@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shangan.mall.dao.AdminstratorTokenMapper">
+
+    <resultMap id="BaseResultMap" type="com.shangan.mall.entity.AdministratorToken">
+        <id column="administrator_id" jdbcType="BIGINT" property="administratorId"/>
+        <result column="token" jdbcType="VARCHAR" property="token"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="expire_time" jdbcType="TIMESTAMP" property="expireTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        administrator_id, token, update_time, expire_time
+    </sql>
+
+    <insert id="insert" parameterType="com.shangan.mall.entity.AdministratorToken">
+        insert into administrator_token (administrator_id, token, update_time, expire_time
+        )
+        values (#{administratorId,jdbcType=BIGINT}, #{token,jdbcType=VARCHAR},
+                #{updateTime,jdbcType=TIMESTAMP},
+                #{expireTime,jdbcType=TIMESTAMP},
+               )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.shangan.mall.entity.AdministratorToken">
+        insert into administrator_token
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="administratorId != null">
+                administrator_id,
+            </if>
+            <if test="token != null">
+                token,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="expireTime != null">
+                expire_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="administratorId != null">
+                #{administratorId,jdbcType=BIGINT},
+            </if>
+            <if test="token != null">
+                #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expireTime != null">
+                #{expireTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from administrator_token
+        where administrator_id = #{administratorId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByToken" parameterType="String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from administrator_token
+        where token = #{token,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from administrator_token
+        where administrator_id = #{administratorId,jdbcType=BIGINT}
+    </delete>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.shangan.mall.entity.AdministratorToken">
+        update administrator_token
+        <set>
+            <if test="token != null">
+                token = #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expireTime != null">
+                expire_time = #{expireTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where administrator_id = #{administratorId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.shangan.mall.entity.AdministratorToken">
+        update administrator_token
+        set token = #{token,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            expire_time = #{expireTime,jdbcType=TIMESTAMP}
+        where administrator_id = #{administratorId,jdbcType=BIGINT}
+    </update>
+</mapper>
